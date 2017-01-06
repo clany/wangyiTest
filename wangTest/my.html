@@ -1,0 +1,115 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function() {
+				mui("#popover").on("tap", ".mui-table-view-cell", function() {
+					var a = $(this).index();
+					if(a == 0) {
+						var cmr = plus.camera.getCamera();
+						var res = cmr.supportedImageResolutions[0];
+						var fmt = cmr.supportedImageFormats[0];
+						console.log(res + "这是" + fmt);
+						cmr.captureImage(function(path) {
+							plus.io.resolveLocalFileSystemURL(path, function(res) {
+								var localUrl = res.toLocalURL();
+								$("#myImg").attr("src", localUrl);
+							}, function() {});
+						}, function() {});
+						mui('.mui-popover').popover('toggle', document.getElementById("openPopover"));
+					}
+					if(a == 1) {
+						var gallery = plus.gallery;
+						gallery.pick(function(path) {
+							//把临时路径转化成本地路径
+							plus.io.resolveLocalFileSystemURL(path, function(res) {
+								var localUrl = res.toLocalURL();
+								$("#myImg").attr("src", localUrl);
+							}, function() {})
+						}, function() {}, {
+							filter: "image"
+						});
+						mui('.mui-popover').popover('toggle', document.getElementById("openPopover"));
+					}
+					if(a == 2) {
+						mui('.mui-popover').popover('toggle', document.getElementById("openPopover"));
+					}
+
+				});
+
+			});
+		</script>
+
+		<div class="mui-content">
+			<div class="head" style="width: 110px;height: 110px;margin: 0px auto;border-radius: 50%;">
+				<a href="#popover" id="openPopover" class="mui-btn "><img id="myImg" style="width: 100px;height: 100px;border-radius: 50%;" src="res1/6.jpg" /></a>
+			</div>
+			<ul class="mui-table-view mui-grid-view mui-grid-9">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-home"></span>
+						<div class="mui-media-body">Home</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-email"><span class="mui-badge mui-badge-red">5</span></span>
+						<div class="mui-media-body">Email</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-chatbubble"></span>
+						<div class="mui-media-body">Chat</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-location"></span>
+						<div class="mui-media-body">Location</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-search"></span>
+						<div class="mui-media-body">Search</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
+					<a href="#">
+						<span class="mui-icon mui-icon-phone"></span>
+						<div class="mui-media-body">Phone</div>
+					</a>
+				</li>
+			</ul>
+
+		</div>
+
+		<div id="popover" class="mui-popover">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell" id="xianj">
+					<a href="#" id="xj">拍照</a>
+				</li>
+				<li class="mui-table-view-cell" id="xce">
+					<a href="#" id="ce">相册</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a href="#">取消</a>
+				</li>
+			</ul>
+		</div>
+
+	</body>
+
+</html>

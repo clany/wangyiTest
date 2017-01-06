@@ -1,0 +1,60 @@
+{
+	"index.html": {
+		"resources": [
+			"my.html",
+			"css/iconfont.ttf",
+			"js/mui.min.js",
+			"css/iconfont.css",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"my.html",
+			"list.html",
+			"read.html",
+			"mediaa.html",
+			"media1.html",
+			"list1.html",
+			"botu.html"
+		]
+	},
+	"my.html": {
+		"resources": [
+			"cwt/1 左耳.jpg",
+			"fonts/mui.ttf",
+			"res1/6.jpg",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"list1.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	},
+	"list.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"botu.html"
+		],
+		"refer": [
+			"detail.html",
+			"botu.html"
+		]
+	},
+	"detail.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css"
+		]
+	},
+	"botu.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		]
+	}
+}

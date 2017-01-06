@@ -1,0 +1,171 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<style type="text/css">
+			.mui-slider-item p {
+				font-size: 1.2rem;
+				color: white;
+				position: absolute;
+				top: 140px;
+				left: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="slider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop" id="myTu">
+
+					</div>
+
+					<div class="mui-slider-indicator" id="xiaod">
+					</div>
+				</div>
+
+				<!--数据列表-->
+				<ul class="mui-table-view mui-table-view-chevron" id="myUl">
+
+				</ul>
+			</div>
+		</div>
+
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var listArray;
+
+			function dianji() {
+				//mui-table-view 的点击事件
+				mui(".mui-table-view").on("tap", ".mui-table-view-cell", function() {
+					var a = $(this).index();
+					mui.openWindow({
+						url: "detail.html",
+						id: "detail",
+						extras: {
+							newsId: listArray[a].id,
+							bt: listArray[a].source
+						}
+					});
+				})
+			}
+
+			//存列表事件
+			function cellDownUp(type) {
+				mui.ajax("http://c.m.163.com/nc/article/headline/T1348647853363/30-20.html?from=toutiao&passport=&devId=OPdeGFsVSojY0ILFe6009pLR%2FMsg7TLJv5TjaQQ6Hpjxd%2BaWU4dx4OOCg2vE3noj&size=20&version=5.5.3&spever=false&net=wifi&lat=&lon=&ts=1456985878&sign=oDwq9mBweKUtUuiS%2FPvB015PyTDKHSxuyuVq2076XQB48ErR02zJ6%2FKXOnxX046I&encryption=1&canal=appstore", {
+					dataType: "json",
+					success: function(data) {
+						if(type == "down") {
+							listArray = data.T1348647853363;
+							$("#myUl").html("");
+							for(var i = 0; i < listArray.length; i++) {
+								var imgStr = listArray[i].img;
+								var digestStr = listArray[i].digest;
+								var interest = listArray[i].title;
+								var xxx = listArray[i].source;
+								var liStr = '<li class="mui-table-view-cell mui-media"><a href="javascript:;"><img class="mui-media-object mui-pull-left" src="' + imgStr + '"><div class="mui-media-body">' + xxx + '<p class="mui-ellipsis">' + digestStr + '</p></div></a></li>';
+								$("#myUl").append(liStr);
+							}
+						}
+						if(type == "up") {
+							var arr = data.T1348647853363;
+//							listArray = listArray.concat(arr);
+							listArray=listArray.splice(0,0,arr);
+							for(var i = 0; i < arr.length; i++) {
+								var imgStr = arr[i].img;
+								var digestStr = arr[i].digest;
+								var interest = arr[i].title;
+								var xxx = arr[i].source;
+								var liStr = '<li class="mui-table-view-cell mui-media"><a href="javascript:;"><img class="mui-media-object mui-pull-left" src="' + imgStr + '"><div class="mui-media-body">' + xxx + '<p class="mui-ellipsis">' + digestStr + '</p></div></a></li>';
+								$("#myUl").append(liStr);
+							}
+						}
+						dianji();
+						mui('#refreshContainer').pullRefresh().endPulldownToRefresh();
+						mui('#refreshContainer').pullRefresh().endPullupToRefresh();
+					},
+					error: function() {
+						console.log("失败");
+					}
+				});
+			}
+
+			mui.init({
+				pullRefresh: {
+					container: "#refreshContainer",
+					down: {
+						auto: true,
+						contentdown: "下拉可以刷新",
+						contentover: "释放立即刷新",
+						contentrefresh: "正在刷新...",
+						callback: function() {
+							cellDownUp("down");
+						}
+					},
+					up: {
+						height: 50,
+						contentnomore: '没有更多数据了',
+						callback: function() {
+							cellDownUp("up");
+						}
+					}
+				}
+			});
+			
+			
+			
+			
+			mui.plusReady(function() {
+				//				轮播图
+				mui.ajax("http://c.m.163.com/nc/article/headline/T1348647853363/0-20.html?from=toutiao&passport=&devId=OPdeGFsVSojY0ILFe6009pLR%2FMsg7TLJv5TjaQQ6Hpjxd%2BaWU4dx4OOCg2vE3noj&size=20&version=5.5.3&spever=false&net=wifi&lat=&lon=&ts=1456985286&sign=%2BY9lXIDh3W7j69unWYNEiSG3So2sMceBy%2B%2FiFf2ZfHh48ErR02zJ6%2FKXOnxX046I&encryption=1&canal=appstore", {
+					dataType: "json",
+					success: function(data) {
+						var arr = data.T1348647853363;
+						var imgs = arr[0];
+						var ings = imgs.ads;
+						var leng = ings.length;
+						var ing1 = ings[leng - 1].imgsrc;
+						var ing2 = ings[0].imgsrc;
+						var tu1 = '<div class="mui-slider-item"><a href="#"><img src="' + ing1 + '"></a></div>';
+						$("#myTu").append(tu1);
+						for(var i = 0; i < ings.length; i++) {
+							var ing = ings[i].imgsrc;
+							var title = ings[i].title;
+							var tu = '<div class="mui-slider-item"><a href="#"><img src="' + ing + '"><p>' + title + '</p></a></div>';
+							$("#myTu").append(tu);
+							//小白点
+							var dian = '<div class="mui-indicator"></div>';
+							$("#xiaod").append(dian);
+						}
+
+						var tu2 = '<div class="mui-slider-item"><a href="#"><img src="' + ing2 + '"></a></div>';
+						$("#myTu").append(tu2);
+						var gallery = mui('.mui-slider');
+						gallery.slider({
+							interval: 5000
+						});
+					},
+					error: function() {
+						console.log("失tu败")
+					}
+				});
+
+				mui("#myTu").on("tap", ".mui-slider-item", function() {
+					console.log("aa");
+					var sw = '<a href="http://news.163.com/photoview/00AP0001/2225647.html#p=C9VBIHF400AP0001"></a>';
+					$("#myTu").append(sw);
+				});
+
+			});
+		</script>
+		
+	</body>
+
+</html>

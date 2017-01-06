@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont.css" />
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			//监听网络状态
+			function onNetChange() {
+				var nt = plus.networkinfo.getCurrentType();
+				switch(nt) {
+					case plus.networkinfo.CONNECTION_ETHERNET:
+					case plus.networkinfo.CONNECTION_WIFI:
+						alert("已经连接wifi");
+						break;
+					case plus.networkinfo.CONNECTION_CELL2G:
+					case plus.networkinfo.CONNECTION_CELL3G:
+						alert("已经连接3G网络")
+					case plus.networkinfo.CONNECTION_CELL4G:
+						alert("已经连接蜂窝网络");
+						break;
+					default:
+						alert("无网络连接");
+						break;
+				}
+			}
+
+			mui.init({
+				subpages: [{
+					url: "my.html",
+					id: "my",
+					styles: {
+						top: "44px",
+						bottom: "44px"
+					}
+				}, {
+					url: "media1.html",
+					id: "media1",
+					styles: {
+						top: "44px",
+						bottom: "44px"
+					}
+				}, {
+					url: "read.html",
+					id: "read",
+					styles: {
+						top: "44px",
+						bottom: "44px"
+					}
+				}, {
+					url: "list.html",
+					id: "list",
+					styles: {
+						top: "44px",
+						bottom: "44px"
+					}
+				}]
+			});
+			mui.plusReady(function() {
+				setTimeout(function(){
+					var list = plus.webview.getWebviewById("list");
+					var read = plus.webview.getWebviewById("read");
+					var media1 = plus.webview.getWebviewById("media1");
+					var my = plus.webview.getWebviewById("my");
+					
+					plus.webview.show(list);
+					plus.webview.hide(read);
+					plus.webview.hide(media1);
+					plus.webview.hide(my);
+					
+				},100)
+				
+				
+				//bar-table的点击事件
+				mui(".mui-bar-tab").on("tap", ".mui-tab-item", function() {
+					//监听网络状态
+					document.addEventListener("netchange", onNetChange, false);
+					var a = $(this).index();
+					var list = plus.webview.getWebviewById("list");
+					var read = plus.webview.getWebviewById("read");
+					var media1 = plus.webview.getWebviewById("media1");
+					var my = plus.webview.getWebviewById("my");
+					switch(a) {
+						case 0:
+							plus.webview.show(list);
+							plus.webview.hide(read);
+							plus.webview.hide(media1);
+							plus.webview.hide(my);
+							break;
+						case 1:
+							plus.webview.show(read);
+							plus.webview.hide(list);
+							plus.webview.hide(media1);
+							plus.webview.hide(my);
+							break;
+						case 2:
+							plus.webview.show(media1);
+							plus.webview.hide(list);
+							plus.webview.hide(read);
+							plus.webview.hide(my);
+							break;
+						case 3:
+							plus.webview.show(my);
+							plus.webview.hide(list);
+							plus.webview.hide(media1);
+							plus.webview.hide(read);
+							break;
+						default:
+							break;
+					}
+				});
+			});
+		</script>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" style="background:#dd3137;">
+			<a class="mui-action-back mui-icon"></a>
+			<h1 class="mui-title" style="color: white;">网易</h1>
+		</header>
+
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active">
+				<span class="iconfont icon-xinwen"></span><br/>
+				<span class="mui-tab-label">新闻</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="iconfont icon-yuedu"></span><br/>
+				<span class="mui-tab-label">阅读</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="iconfont icon-shiting"></span><br/>
+				<span class="mui-tab-label">视听</span>
+			</a>
+			<a class="mui-tab-item">
+				<span class="iconfont icon-wode"></span><br/>
+				<span class="mui-tab-label">我的</span>
+			</a>
+		</nav>
+	</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			mui.plusReady(function(){
+				mui.ajax("http://c.3g.163.com/nc/video/home/10-10.html",{
+					dataType:"json",
+					success:function(data){
+						jxMediaData(data);
+						
+					},
+					error:function(){
+						console.log("sb")
+					}
+				});	
+			});
+			
+			//解析数据
+			function jxMediaData(data){
+				var finalist = null;
+				var arr = data.videoList;
+				for(var i = 0; i < arr.length; i++) {
+					finalist = '<div class="viedio-container" ><strong class="viedio_title">' + data.videoList[i].title + '</strong><span class="viedio_subtitle">' + data.videoList[i].description + '</span><video style="width:100%" class="play-video"controls poster=' + arr[i].cover + ' ><source src=' + data.videoList[i].mp4_url + '></source><source src="myvideo.ogv" type="video/ogg"></source><source src="myvideo.webm" type="video/webm"></source><object width="" height="" type="application/x-shockwave-flash" data="myvideo.swf"><param name="movie" value="myvideo.swf" /><param name="flashvars" value="autostart=true&amp;file=myvideo.swf" /></object>当前浏览器不支持 video直接播放，点击这里下载视频： <a href="myvideo.webm">下载视频</a></video></div>';
+					$('#myMedia').append(finalist);
+				}
+			}
+		</script>
+		<div class="mui-content" id="myMedia">
+		   
+		</div>
+	</body>
+
+</html>
